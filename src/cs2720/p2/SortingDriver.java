@@ -1,7 +1,10 @@
 package cs2720.p2;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Random;
 
 /**
  * Runs and tests five different sorting algorithms given a randomly generated input sizes.
@@ -9,11 +12,22 @@ import java.util.Random;
 public class SortingDriver {
 
     public static void main(String[] args) {
-
+        // Checks if file is invalid
+        if (args.length != 1) {
+            System.out.println("Usage: java Sorting <input-file>");
+            return;
+        } // if
+        String file = args[0];
+        int[] array = null;
+        // Read file input and convert to array
+        try {
+            array = buildArray(file);
+        } catch (IOException io) {
+            System.out.println(io.getMessage());
+            return;
+        } // try
         Scanner scanner = new Scanner(System.in);
-        // Prompt size and print User Interface
-        System.out.print("Enter size of array: ");
-        int size = scanner.nextInt();
+        // Print User Interface
         System.out.println("\nselection-sort (s)");
         System.out.println("merge-sort (m)");
         System.out.println("heap-sort (h)");
@@ -21,12 +35,9 @@ public class SortingDriver {
         System.out.println("quick-sort-rp (r)");
         System.out.println("Enter the algorithm:");
         String input = scanner.next().toLowerCase();
-        // build array given a size
-        int[] array = buildArray(size);
         int length = array.length;
         // initialize comparison count
         Sorting.resetCount();
-
         switch (input) {
         case "s":
             Sorting.selectionSort(array);
@@ -61,17 +72,35 @@ public class SortingDriver {
     } // main
 
     /**
-     * Helper method to build array given an inputted size.
+     * Helper method to read file input of integers and build an array out of it.
      *
-     * @param size the inputted size of array
+     * @param file the file input
      * @return array the array created
      */
-    private static int[] buildArray(int size) {
-        Random random = new Random();
-        int[] array = new int[size];
-        // fill array with random values
-        for (int i = 0; i < size; i++) {
-            array[i] = random.nextInt(size);
+    private static int[] buildArray(String file) throws IOException {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line;
+            // adds line-by-line the integers from the file to an ArrayList
+            while ((line = reader.readLine()) != null) {
+                String[] numbers = line.split("\\s+");
+                for (String number : numbers) {
+                    if (!number.trim().isEmpty()) {
+                        arrayList.add(Integer.parseInt(number.trim()));
+                    } // if
+                } // for
+            } // while
+        } finally {
+            if (reader != null) {
+                reader.close();
+            } // if
+        } // try
+        // add contents to an array
+        int[] array = new int[arrayList.size()];
+        for (int i = 0; i < arrayList.size(); i++) {
+            array[i] = arrayList.get(i);
         } // for
         return array;
     } // buildArray

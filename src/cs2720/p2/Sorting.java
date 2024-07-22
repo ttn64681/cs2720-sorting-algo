@@ -1,13 +1,6 @@
 package cs2720.p2;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 import java.util.Random;
-
 
 /**
  * Class that contains multiple sorting algorithms.
@@ -33,49 +26,12 @@ public class Sorting {
     } // getCount
 
     /**
-     * Helper method that reads the input file and converts it into an array.
-     *
-     * @param file the file name inputted via the command line
-     * @return array the array of integers from within the file
-     */
-    public static int[] readInput(String file) throws IOException {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line;
-            // adds line-by-line the integers from the file to an ArrayList
-            while ((line = reader.readLine()) != null) {
-                String[] numbers = line.split("\\s+");
-                for (String number : numbers) {
-                    if (!number.trim().isEmpty()) {
-                        arrayList.add(Integer.parseInt(number.trim()));
-                    } // if
-                } // for
-            } // while
-        } finally {
-            if (reader != null) {
-                reader.close();
-            } // if
-        } // try
-        // add the ArrayList contents to an array
-        int[] array = new int[arrayList.size()];
-        for (int i = 0; i < arrayList.size(); i++) {
-            array[i] = arrayList.get(i);
-        } // for
-        return array;
-    } // readInput
-
-    /**
      * Helper method to print array.
      *
      * @param array the given array to print.
      */
     public static void printArray(int[] array) {
-        for (int i = 0; i < 10; i++) {
-            System.out.print(i + " ");
-        } // for
-        for (int i = array.length - 1; i > array.length - 11; i--) {
+        for (int i = 0; i < array.length; i++) {
             System.out.print(i + " ");
         } // for
     } // printArray
